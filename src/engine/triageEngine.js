@@ -204,12 +204,13 @@ export function calculateTriageAssessment(input, options = {}) {
     message: text(rule.message, language),
   }));
   const redFlag = matchingRedFlags.length > 0;
-  const level = redFlag ? 'emergency' : score >= 8 ? 'emergency' : score >= 4 ? 'doctor' : 'self';
+  const baseLevel = redFlag ? 'emergency' : score >= 8 ? 'emergency' : score >= 4 ? 'doctor' : 'self';
+  const level = options.overrideLevel || baseLevel;
   const guidance = RECOMMENDATIONS[level];
   const expectedFollowUps = [...new Set(selectedSymptoms.flatMap((symptom) => symptom.followUps))];
   const answeredFollowUps = expectedFollowUps.filter((key) => input.answers?.[key] !== undefined && input.answers?.[key] !== '');
   const inputCoverage = expectedFollowUps.length ? Math.round((answeredFollowUps.length / expectedFollowUps.length) * 100) : 100;
-  const decisionPath = redFlag ? 'red_flag_override' : score >= 8 ? 'score_emergency' : score >= 4 ? 'score_doctor' : 'score_self';
+  const decisionPath = options.overrideLevel ? 'neural_network_override' : redFlag ? 'red_flag_override' : score >= 8 ? 'score_emergency' : score >= 4 ? 'score_doctor' : 'score_self';
 
   return {
     valid: true,

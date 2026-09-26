@@ -129,6 +129,27 @@ export function ResultPanel({ copy, result, serviceNotice, onNewAssessment, comp
           <span className="section-label">{copy.whatNext}</span>
           <div className="timeframe"><Clock3 size={19} aria-hidden="true" /><span><small>{copy.suggestedTimeframe}</small><strong>{result.timeframe}</strong></span></div>
           <ul className="recommendations">{result.recommendations.map((item) => <li key={item}><CircleCheck size={17} aria-hidden="true" /><span>{item}</span></li>)}</ul>
+          
+          {result.neuralAnalysis && (
+            <div className="timeframe" style={{ marginTop: '24px', flexDirection: 'column', alignItems: 'flex-start', gap: '12px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <Gauge size={19} aria-hidden="true" />
+                <span>
+                  <small>AI SPECIALIST SECOND OPINION</small>
+                  <strong>
+                    {result.neuralAnalysis.match 
+                      ? `Agrees (${result.neuralAnalysis.confidence}% confidence)` 
+                      : `Disagrees: Suggests ${result.neuralAnalysis.prediction.toUpperCase()} (${result.neuralAnalysis.confidence}% conf.)`}
+                  </strong>
+                </span>
+              </div>
+              {result.neuralAnalysis.message && (
+                <p style={{ margin: 0, padding: '12px', background: 'var(--bg)', borderRadius: '12px', boxShadow: 'var(--neu-in)', fontSize: '13px', lineHeight: '1.5', fontStyle: 'italic', color: 'var(--text)' }}>
+                  "{result.neuralAnalysis.message}"
+                </p>
+              )}
+            </div>
+          )}
         </section>
       </div>
 

@@ -13,12 +13,12 @@
   },
   "dependencies": {
     "@vitejs/plugin-react": "6.1.1",
+    "brain.js": "^1.6.1",
     "concurrently": "10.0.5",
     "express": "5.2.1",
-    "vite": "8.3.0",
+    "lucide-react": "1.47.0",
     "react": "19.3.0",
     "react-dom": "19.3.0",
-    "lucide-react": "1.47.0"
-  },
-  "devDependencies": {}
+    "vite": "8.3.0"
+  }
 }

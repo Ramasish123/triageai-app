@@ -173,9 +173,14 @@ export default function App() {
     const localResult = calculateTriageAssessment(input, { language });
     let nextResult = localResult;
     let nextNotice = '';
+    
+    // Show AI thinking state
+    setWizard('analyzing');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
     try {
       const controller = new AbortController();
-      const timeout = window.setTimeout(() => controller.abort(), 3500);
+      const timeout = window.setTimeout(() => controller.abort(), 60000); // 60s for LLM
       const response = await fetch('/api/triage', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -187,8 +192,9 @@ export default function App() {
       const apiResult = await response.json();
       if (!apiResult.valid) throw new Error('Triage service rejected a valid assessment');
       nextResult = apiResult;
-    } catch {
-      nextNotice = copy.optionalServiceUnavailable;
+    } catch (err) {
+      console.error(err);
+      nextNotice = 'The AI Specialist is currently unreachable. Falling back to basic deterministic analysis.';
     }
 
     setResult(nextResult);
@@ -206,7 +212,6 @@ export default function App() {
     };
     setHistory(saveHistoryRecord(record));
     setWizard('result');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [copy.optionalServiceUnavailable, language, normalisedInput]);
 
   const openHistoryRecord = useCallback((record) => {
