@@ -20,6 +20,7 @@ import { Progress } from './components/Progress.jsx';
 import { ResultPanel } from './components/ResultPanel.jsx';
 import { SymptomSelector } from './components/SymptomSelector.jsx';
 import { SYMPTOMS, getSymptomText, symptomById } from './data/symptoms.js';
+import { RED_FLAG_RULES } from './data/redFlags.js';
 import { useCopy } from './data/translations.js';
 import { calculateTriageAssessment, getAgeLabel, getDurationLabel } from './engine/triageEngine.js';
 import { clearHistory, getHistory, getPreferences, removeHistoryRecord, saveHistoryRecord, savePreferences } from './utils/storage.js';
@@ -276,7 +277,7 @@ function HomePage({ copy, onStartAssessment, onNavigate }) {
         </div>
         <div className="hero-metrics" aria-label={copy.modelStrength}>
           <span><strong>{SYMPTOMS.length}</strong><small>{copy.symptomRules}</small></span>
-          <span><strong>6</strong><small>{copy.emergencyChecks}</small></span>
+          <span><strong>{RED_FLAG_RULES.length}</strong><small>{copy.emergencyChecks}</small></span>
           <span><strong>100%</strong><small>{copy.explainableLogic}</small></span>
         </div>
         <div className="hero-disclaimer" id="disclaimer"><Info size={18} aria-hidden="true" /><span>{copy.disclaimer}</span></div>

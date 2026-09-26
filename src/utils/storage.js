@@ -2,7 +2,11 @@ const HISTORY_KEY = 'triageai.assessment-history.v2';
 const PREFERENCES_KEY = 'triageai.preferences.v1';
 
 function canUseStorage() {
-  return typeof window !== 'undefined' && typeof window.localStorage !== 'undefined';
+  try {
+    return typeof window !== 'undefined' && typeof window.localStorage !== 'undefined';
+  } catch {
+    return false;
+  }
 }
 
 function safelyParse(value, fallback) {
@@ -16,7 +20,12 @@ function safelyParse(value, fallback) {
 
 export function getHistory() {
   if (!canUseStorage()) return [];
-  const history = safelyParse(window.localStorage.getItem(HISTORY_KEY), []);
+  let history;
+  try {
+    history = safelyParse(window.localStorage.getItem(HISTORY_KEY), []);
+  } catch {
+    return [];
+  }
   return Array.isArray(history) ? history.filter(isValidHistoryRecord).slice(0, 20) : [];
 }
 
@@ -24,31 +33,48 @@ export function saveHistoryRecord(record) {
   if (!canUseStorage()) return [];
   const current = getHistory();
   const next = [record, ...current.filter((item) => item.id !== record.id)].slice(0, 20);
-  window.localStorage.setItem(HISTORY_KEY, JSON.stringify(next));
+  try {
+    window.localStorage.setItem(HISTORY_KEY, JSON.stringify(next));
+  } catch {
+    return current;
+  }
   return next;
 }
 
 export function removeHistoryRecord(id) {
   if (!canUseStorage()) return [];
   const next = getHistory().filter((item) => item.id !== id);
-  window.localStorage.setItem(HISTORY_KEY, JSON.stringify(next));
+  try {
+    window.localStorage.setItem(HISTORY_KEY, JSON.stringify(next));
+  } catch {
+    return getHistory();
+  }
   return next;
 }
 
 export function clearHistory() {
   if (!canUseStorage()) return;
-  window.localStorage.removeItem(HISTORY_KEY);
+  try {
+    window.localStorage.removeItem(HISTORY_KEY);
+  } catch { /* Storage can be disabled by browser privacy settings. */ }
 }
 
 export function getPreferences() {
   if (!canUseStorage()) return {};
-  const preferences = safelyParse(window.localStorage.getItem(PREFERENCES_KEY), {});
+  let preferences;
+  try {
+    preferences = safelyParse(window.localStorage.getItem(PREFERENCES_KEY), {});
+  } catch {
+    return {};
+  }
   return preferences && typeof preferences === 'object' && !Array.isArray(preferences) ? preferences : {};
 }
 
 export function savePreferences(preferences) {
   if (!canUseStorage()) return;
-  window.localStorage.setItem(PREFERENCES_KEY, JSON.stringify(preferences));
+  try {
+    window.localStorage.setItem(PREFERENCES_KEY, JSON.stringify(preferences));
+  } catch { /* Preferences remain in memory if persistence is unavailable. */ }
 }
 
 function isValidHistoryRecord(record) {
@@ -57,6 +83,7 @@ function isValidHistoryRecord(record) {
       typeof record === 'object' &&
       typeof record.id === 'string' &&
       typeof record.createdAt === 'string' &&
+      !Number.isNaN(Date.parse(record.createdAt)) &&
       record.input &&
       Array.isArray(record.input.symptomIds) &&
       typeof record.input.ageGroup === 'string' &&
