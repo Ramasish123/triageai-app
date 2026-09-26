@@ -142,26 +142,24 @@ The JSON must follow this exact structure:
         throw new Error(`API Error: ${response.status}`);
       }
     } catch (err) {
-      console.warn('Failed to reach AI model, using simulated generative fallback:', err.message);
+      console.warn('Failed to reach AI model, using deterministic engine for fallback:', err.message);
       
-      // Simulated generative AI payload when the endpoint/key fails
-      finalResult.level = 'doctor';
-      finalResult.score = 5;
-      finalResult.baseScore = 5;
-      finalResult.timeframe = 'Within 48 hours';
-      finalResult.recommendations = ['Schedule a doctor appointment', 'Monitor symptoms closely', 'Stay hydrated'];
-      finalResult.reasons = [
-        { id: 'gen1', label: 'AI Synthesis', detail: 'The combination of symptoms suggests a moderate condition requiring professional evaluation.', points: 3 },
-        { id: 'gen2', label: 'Duration Context', detail: 'Symptoms have persisted beyond the typical self-care window.', points: 2 }
-      ];
-      finalResult.adjustments = [];
-      finalResult.redFlag = false;
-      finalResult.redFlags = [];
+      const baseResult = calculateTriageAssessment(req.body, { language });
       
-      finalResult.neuralAnalysis.prediction = 'doctor';
-      finalResult.neuralAnalysis.confidence = 92;
-      finalResult.neuralAnalysis.match = false;
-      finalResult.neuralAnalysis.message = "I have analyzed your specific context. While not an emergency, these symptoms warrant a professional medical review within the next two days to rule out underlying infections.";
+      finalResult.level = baseResult.level;
+      finalResult.score = baseResult.score;
+      finalResult.baseScore = baseResult.baseScore;
+      finalResult.timeframe = baseResult.level === 'emergency' ? 'Immediately' : baseResult.level === 'doctor' ? 'Within 24-48 hours' : 'Observe closely';
+      finalResult.recommendations = baseResult.recommendations || ['Follow standard medical advice', 'Rest and hydrate'];
+      finalResult.reasons = baseResult.reasons || [];
+      finalResult.adjustments = baseResult.adjustments || [];
+      finalResult.redFlag = baseResult.redFlag;
+      finalResult.redFlags = baseResult.redFlags || [];
+      
+      finalResult.neuralAnalysis.prediction = baseResult.level;
+      finalResult.neuralAnalysis.confidence = 88;
+      finalResult.neuralAnalysis.match = true;
+      finalResult.neuralAnalysis.message = "My cloud connection failed, but I've processed your specific symptoms locally. Please follow the guidance based on your computed score.";
     }
 
     // Simulate deep AI thinking time (3.5 seconds)
