@@ -317,3 +317,321 @@ h1, h2 { font-family: var(--serif); font-weight: 600; letter-spacing: -.045em; }
   .assessment, .page-width { width: 100% !important; max-width: none !important; padding: 0 !important; }
   .result-section, .outcome-card, .model-audit > div { box-shadow: none !important; break-inside: avoid; }
 }
+
+/* Tactile apothecary redesign ------------------------------------------------ */
+:root {
+  --bg: #17201c;
+  --bg-raised: #202b25;
+  --surface: #2a3730;
+  --surface-soft: #34443a;
+  --surface-strong: #425449;
+  --text: #f5f0e5;
+  --text-muted: #bbc2b6;
+  --text-faint: #8b998d;
+  --line: #506156;
+  --line-strong: #748479;
+  --teal: #91d1ad;
+  --teal-deep: #4e9b78;
+  --gold: #dfb875;
+  --red: #ed9287;
+  --red-deep: #af534f;
+  --green: #91d1ad;
+  --shadow: rgba(5, 12, 8, .42);
+  --focus: #ffe0a2;
+}
+
+:root[data-theme="light"] {
+  --bg: #e8e0d1;
+  --bg-raised: #f3ecdf;
+  --surface: #faf5ea;
+  --surface-soft: #e8dfce;
+  --surface-strong: #d9ceb9;
+  --text: #26342c;
+  --text-muted: #617066;
+  --text-faint: #7f8a7f;
+  --line: #c7baa4;
+  --line-strong: #a7977f;
+  --teal: #27785a;
+  --teal-deep: #1e624a;
+  --gold: #9b6a2b;
+  --red: #af4d49;
+  --red-deep: #903a37;
+  --green: #27785a;
+  --shadow: rgba(58, 43, 23, .18);
+  --focus: #a56620;
+}
+
+body {
+  background:
+    radial-gradient(900px 580px at 92% -12%, color-mix(in srgb, var(--teal) 17%, transparent), transparent 72%),
+    radial-gradient(760px 650px at -12% 30%, color-mix(in srgb, var(--gold) 12%, transparent), transparent 70%),
+    repeating-linear-gradient(115deg, color-mix(in srgb, var(--text) 1.7%, transparent) 0 1px, transparent 1px 9px),
+    var(--bg);
+}
+
+.app-shell { position: relative; isolation: isolate; }
+.app-shell::before {
+  content: '';
+  position: fixed;
+  z-index: -1;
+  inset: 0;
+  pointer-events: none;
+  opacity: .44;
+  background: radial-gradient(ellipse at center, transparent 40%, color-mix(in srgb, #000 28%, transparent) 115%);
+}
+
+.app-header {
+  border-bottom-color: color-mix(in srgb, var(--line-strong) 65%, transparent);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--surface-soft) 95%, transparent), color-mix(in srgb, var(--bg-raised) 90%, transparent));
+  box-shadow: inset 0 -1px 0 color-mix(in srgb, #000 30%, transparent), 0 11px 28px var(--shadow);
+}
+.brand-mark {
+  border-color: color-mix(in srgb, var(--line-strong) 90%, var(--teal));
+  background: linear-gradient(145deg, var(--surface-strong), var(--surface));
+  box-shadow: inset 1px 1px 0 color-mix(in srgb, #fff 15%, transparent), inset -2px -2px 4px color-mix(in srgb, #000 23%, transparent), 0 5px 12px var(--shadow);
+}
+.header-icon, .header-link, .language-control {
+  border-color: color-mix(in srgb, var(--line) 88%, #000);
+  background: linear-gradient(145deg, color-mix(in srgb, var(--surface-strong) 88%, transparent), color-mix(in srgb, var(--surface) 90%, transparent));
+  box-shadow: inset 1px 1px 0 color-mix(in srgb, #fff 11%, transparent), inset -1px -2px 3px color-mix(in srgb, #000 21%, transparent), 0 4px 9px color-mix(in srgb, var(--shadow) 55%, transparent);
+}
+.header-icon:hover, .header-link:hover, .language-control:hover, .header-link.current, .demo-link.current {
+  color: var(--text);
+  border-color: color-mix(in srgb, var(--teal) 80%, var(--line-strong));
+  background: linear-gradient(145deg, color-mix(in srgb, var(--teal) 18%, var(--surface-strong)), color-mix(in srgb, var(--teal) 5%, var(--surface)));
+}
+
+.button {
+  position: relative;
+  overflow: hidden;
+  border-color: color-mix(in srgb, var(--line-strong) 85%, #000);
+  box-shadow: inset 1px 1px 0 color-mix(in srgb, #fff 16%, transparent), inset -2px -3px 5px color-mix(in srgb, #000 26%, transparent), 0 7px 14px color-mix(in srgb, var(--shadow) 75%, transparent);
+}
+.button::after {
+  content: '';
+  position: absolute;
+  inset: 1px 1px auto;
+  height: 45%;
+  border-radius: inherit;
+  background: linear-gradient(180deg, color-mix(in srgb, #fff 18%, transparent), transparent);
+  pointer-events: none;
+}
+.button.primary {
+  color: #10241a;
+  border-color: color-mix(in srgb, var(--teal) 75%, #fff);
+  background: linear-gradient(155deg, #b0e3bd 0%, var(--teal) 44%, var(--teal-deep) 100%);
+  box-shadow: inset 1px 1px 0 rgba(255,255,255,.43), inset -2px -3px 5px rgba(17,72,49,.32), 0 10px 20px color-mix(in srgb, var(--teal) 20%, var(--shadow));
+}
+.button.secondary { background: linear-gradient(145deg, var(--surface-strong), var(--surface)); }
+.button:hover:not(:disabled) { transform: translateY(-2px); filter: brightness(1.055); }
+.button:active:not(:disabled), .header-icon:active, .header-link:active, .language-control:active {
+  transform: translateY(1px) scale(.985);
+  box-shadow: inset 2px 3px 6px color-mix(in srgb, #000 31%, transparent), inset -1px -1px 1px color-mix(in srgb, #fff 8%, transparent);
+}
+
+.hero-metrics, .principles, .review-card, .result-section, .outcome-card, .privacy-grid article, .demo-scenarios article, .demo-stage, .empty-history {
+  border-color: color-mix(in srgb, var(--line-strong) 76%, #000);
+  background: linear-gradient(145deg, color-mix(in srgb, var(--surface-strong) 65%, var(--surface)), var(--surface));
+  box-shadow: inset 1px 1px 0 color-mix(in srgb, #fff 11%, transparent), inset -2px -3px 5px color-mix(in srgb, #000 17%, transparent), 0 17px 36px color-mix(in srgb, var(--shadow) 74%, transparent);
+}
+.principles { gap: 2px; background: color-mix(in srgb, var(--line) 82%, #000); }
+.principles article, .privacy-grid article, .demo-scenarios article { position: relative; overflow: hidden; background: linear-gradient(145deg, var(--surface-strong), var(--surface)); }
+.principles article::before, .privacy-grid article::before, .demo-scenarios article::before {
+  content: '';
+  position: absolute;
+  inset: 1px 1px auto;
+  height: 30%;
+  border-radius: inherit;
+  background: linear-gradient(180deg, color-mix(in srgb, #fff 7%, transparent), transparent);
+  pointer-events: none;
+}
+.principles article:hover, .privacy-grid article:hover, .demo-scenarios article:hover {
+  transform: translateY(-5px) rotateX(1deg);
+  border-color: color-mix(in srgb, var(--teal) 68%, var(--line-strong));
+  box-shadow: inset 1px 1px 0 color-mix(in srgb, #fff 15%, transparent), 0 23px 40px color-mix(in srgb, var(--shadow) 88%, transparent);
+}
+
+.progress-marker {
+  border-color: color-mix(in srgb, var(--line-strong) 90%, #000);
+  background: radial-gradient(circle at 35% 28%, color-mix(in srgb, #fff 12%, transparent), transparent 34%), linear-gradient(145deg, var(--surface-strong), var(--surface));
+  box-shadow: inset 1px 1px 0 color-mix(in srgb, #fff 13%, transparent), inset -2px -2px 4px color-mix(in srgb, #000 23%, transparent), 0 4px 9px var(--shadow);
+}
+.progress li.done .progress-marker { background: linear-gradient(145deg, #b4e7c0, var(--teal)); box-shadow: inset 1px 1px 0 rgba(255,255,255,.48), 0 5px 12px color-mix(in srgb, var(--teal) 25%, transparent); }
+.progress li.current .progress-marker { animation: marker-breathe 2.4s ease-in-out infinite; }
+
+.privacy-brief, .selection-empty, .form-error, .service-notice, .safety-message, .privacy-note, .safety-check {
+  background: linear-gradient(145deg, color-mix(in srgb, var(--surface-strong) 70%, var(--surface)), var(--surface));
+  box-shadow: inset 1px 1px 0 color-mix(in srgb, #fff 8%, transparent), inset -2px -2px 4px color-mix(in srgb, #000 15%, transparent);
+}
+.choice-card, .option-button, .symptom-card, .search-field, .category-tabs button, .history-filters button, .result-tools button, .review-line button, .history-record, .history-delete {
+  border-color: color-mix(in srgb, var(--line-strong) 70%, #000);
+  background: linear-gradient(145deg, var(--surface-strong), var(--surface));
+  box-shadow: inset 1px 1px 0 color-mix(in srgb, #fff 9%, transparent), inset -2px -3px 4px color-mix(in srgb, #000 20%, transparent), 0 4px 8px color-mix(in srgb, var(--shadow) 55%, transparent);
+}
+.choice-card:hover, .option-button:hover, .symptom-card:hover, .category-tabs button:hover, .history-filters button:hover, .result-tools button:hover, .review-line button:hover, .history-record:hover, .history-delete:hover {
+  border-color: color-mix(in srgb, var(--teal) 64%, var(--line-strong));
+  transform: translateY(-2px);
+  box-shadow: inset 1px 1px 0 color-mix(in srgb, #fff 13%, transparent), 0 10px 18px color-mix(in srgb, var(--shadow) 78%, transparent);
+}
+.choice-card:active, .option-button:active, .symptom-card:active, .category-tabs button:active, .history-filters button:active, .result-tools button:active, .review-line button:active, .history-record:active, .history-delete:active { transform: translateY(1px); box-shadow: inset 2px 3px 5px color-mix(in srgb, #000 28%, transparent); }
+.choice-card.selected, .option-button.selected, .symptom-card.selected, .category-tabs button.selected, .history-filters button.selected {
+  border-color: color-mix(in srgb, var(--teal) 80%, #fff);
+  background: linear-gradient(145deg, color-mix(in srgb, var(--teal) 28%, var(--surface-strong)), color-mix(in srgb, var(--teal) 10%, var(--surface)));
+  box-shadow: inset 1px 1px 0 color-mix(in srgb, #fff 16%, transparent), inset 0 0 0 1px color-mix(in srgb, var(--teal) 30%, transparent), 0 8px 17px color-mix(in srgb, var(--teal) 13%, var(--shadow));
+}
+.symptom-card.red-flag.selected, .danger-option.selected { border-color: color-mix(in srgb, var(--red) 82%, #fff); background: linear-gradient(145deg, color-mix(in srgb, var(--red) 23%, var(--surface-strong)), color-mix(in srgb, var(--red) 8%, var(--surface))); }
+.symptom-check { box-shadow: inset 1px 1px 2px color-mix(in srgb, #000 22%, transparent); }
+.search-field:focus-within { box-shadow: inset 1px 1px 0 color-mix(in srgb, #fff 13%, transparent), 0 0 0 3px color-mix(in srgb, var(--teal) 16%, transparent), 0 8px 16px var(--shadow); }
+
+.safety-check { border-color: color-mix(in srgb, var(--red) 43%, var(--line-strong)); }
+.safety-check .danger-option { border-color: color-mix(in srgb, var(--red) 34%, var(--line-strong)); }
+.outcome-card { position: relative; overflow: hidden; }
+.outcome-card::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(115deg, color-mix(in srgb, #fff 8%, transparent), transparent 31%); }
+.score-card, .timeframe, .model-audit > div, .demo-selected { border: 1px solid color-mix(in srgb, var(--line-strong) 70%, #000); background: linear-gradient(145deg, var(--surface-strong), var(--surface-soft)); box-shadow: inset 1px 1px 0 color-mix(in srgb, #fff 10%, transparent), inset -2px -2px 4px color-mix(in srgb, #000 17%, transparent); }
+.site-footer { border-top-color: color-mix(in srgb, var(--line-strong) 70%, #000); }
+
+@keyframes marker-breathe {
+  0%, 100% { box-shadow: inset 1px 1px 0 color-mix(in srgb, #fff 13%, transparent), inset -2px -2px 4px color-mix(in srgb, #000 23%, transparent), 0 0 0 0 color-mix(in srgb, var(--teal) 28%, transparent); }
+  50% { box-shadow: inset 1px 1px 0 color-mix(in srgb, #fff 13%, transparent), inset -2px -2px 4px color-mix(in srgb, #000 23%, transparent), 0 0 0 8px color-mix(in srgb, var(--teal) 0%, transparent); }
+}
+
+@media (max-width: 740px) {
+  .app-header { background: linear-gradient(180deg, var(--surface-soft), var(--bg-raised)); }
+  .choice-card:hover, .option-button:hover, .symptom-card:hover { transform: none; }
+}
+
+/* Liquid Glass material system — aligned with the iOS/iPadOS 27 and macOS 27
+   Figma reference: translucent strata, a refractive highlight, and a tactile
+   press depth that still reads clearly in the clinical assessment flow. */
+:root {
+  --glass-fill: rgba(225, 255, 235, .105);
+  --glass-fill-strong: rgba(221, 255, 234, .17);
+  --glass-stroke: rgba(228, 255, 237, .27);
+  --glass-shadow: rgba(1, 10, 5, .36);
+  --glass-specular: rgba(255, 255, 255, .23);
+  --glass-ink: #effbf1;
+}
+
+:root[data-theme="light"] {
+  --glass-fill: rgba(255, 255, 255, .42);
+  --glass-fill-strong: rgba(255, 255, 255, .62);
+  --glass-stroke: rgba(255, 255, 255, .78);
+  --glass-shadow: rgba(63, 46, 25, .16);
+  --glass-specular: rgba(255, 255, 255, .82);
+  --glass-ink: #213b2c;
+}
+
+body {
+  background:
+    radial-gradient(750px 620px at -12% 2%, rgba(82, 212, 155, .23), transparent 67%),
+    radial-gradient(650px 560px at 105% 78%, rgba(246, 178, 91, .18), transparent 70%),
+    radial-gradient(560px 430px at 61% 36%, rgba(72, 143, 115, .14), transparent 69%),
+    linear-gradient(135deg, #14251e 0%, #1e352b 46%, #14221d 100%);
+}
+:root[data-theme="light"] body {
+  background:
+    radial-gradient(700px 580px at -8% 5%, rgba(131, 215, 171, .38), transparent 68%),
+    radial-gradient(640px 520px at 105% 88%, rgba(244, 191, 116, .32), transparent 70%),
+    linear-gradient(135deg, #dce9df 0%, #f0e9dc 54%, #d6e6dd 100%);
+}
+.app-shell::before { opacity: .2; background: radial-gradient(ellipse at 50% 30%, transparent 16%, rgba(0, 0, 0, .23) 125%); }
+
+.app-header {
+  isolation: isolate;
+  border-bottom: 1px solid var(--glass-stroke);
+  background: linear-gradient(105deg, rgba(26, 52, 40, .64), rgba(31, 54, 45, .42));
+  box-shadow: inset 0 1px 0 var(--glass-specular), 0 12px 34px var(--glass-shadow);
+  -webkit-backdrop-filter: blur(26px) saturate(145%);
+  backdrop-filter: blur(26px) saturate(145%);
+}
+:root[data-theme="light"] .app-header { background: linear-gradient(105deg, rgba(247, 251, 247, .62), rgba(239, 233, 219, .42)); }
+.app-header::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 1px 0 auto;
+  height: 30px;
+  opacity: .7;
+  background: linear-gradient(180deg, var(--glass-specular), transparent);
+  pointer-events: none;
+}
+
+.brand-mark, .header-icon, .header-link, .language-control,
+.hero-metrics, .principles, .review-card, .result-section, .outcome-card,
+.privacy-grid article, .demo-scenarios article, .demo-stage, .empty-history,
+.privacy-brief, .selection-empty, .form-error, .service-notice, .safety-message,
+.privacy-note, .safety-check, .model-audit > div, .score-card, .timeframe,
+.demo-selected {
+  border-color: var(--glass-stroke);
+  background: linear-gradient(132deg, var(--glass-fill-strong), var(--glass-fill) 58%, rgba(255, 255, 255, .035));
+  box-shadow: inset 0 1px 0 var(--glass-specular), inset 1px 0 0 rgba(255, 255, 255, .08), 0 16px 36px var(--glass-shadow);
+  -webkit-backdrop-filter: blur(22px) saturate(150%);
+  backdrop-filter: blur(22px) saturate(150%);
+}
+
+.brand-mark, .header-icon, .header-link, .language-control { box-shadow: inset 0 1px 0 var(--glass-specular), 0 6px 15px rgba(0, 8, 4, .17); }
+.header-icon:hover, .header-link:hover, .language-control:hover, .header-link.current, .demo-link.current {
+  border-color: rgba(177, 245, 203, .7);
+  background: linear-gradient(132deg, rgba(196, 255, 216, .26), rgba(154, 229, 184, .11));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .5), 0 8px 18px rgba(5, 24, 13, .25);
+}
+
+.button, .choice-card, .option-button, .symptom-card, .search-field,
+.category-tabs button, .history-filters button, .result-tools button,
+.review-line button, .history-record, .history-delete {
+  border-color: var(--glass-stroke);
+  background: linear-gradient(135deg, var(--glass-fill-strong), var(--glass-fill));
+  box-shadow: inset 0 1px 0 var(--glass-specular), inset 1px 0 0 rgba(255, 255, 255, .08), 0 7px 18px rgba(0, 11, 5, .2);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  backdrop-filter: blur(18px) saturate(150%);
+  transition: transform .28s cubic-bezier(.2, .9, .2, 1), border-color .28s ease, box-shadow .28s ease, background .28s ease, filter .28s ease;
+}
+.button::after { height: 48%; background: linear-gradient(180deg, rgba(255, 255, 255, .24), rgba(255, 255, 255, 0)); }
+.button.primary {
+  color: #103421;
+  border-color: rgba(229, 255, 238, .72);
+  background: linear-gradient(145deg, rgba(237, 255, 241, .9), rgba(166, 239, 191, .92) 46%, rgba(93, 189, 133, .92));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .78), inset 0 -2px 4px rgba(18, 96, 53, .2), 0 11px 25px rgba(72, 196, 125, .25);
+}
+.button.secondary { color: var(--glass-ink); }
+.button:hover:not(:disabled), .choice-card:hover, .option-button:hover, .symptom-card:hover,
+.category-tabs button:hover, .history-filters button:hover, .result-tools button:hover,
+.review-line button:hover, .history-record:hover, .history-delete:hover {
+  border-color: rgba(192, 255, 217, .75);
+  background: linear-gradient(135deg, rgba(224, 255, 234, .24), rgba(154, 226, 182, .12));
+  transform: translateY(-3px) scale(1.008);
+  filter: brightness(1.07);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .48), 0 15px 27px rgba(0, 15, 7, .3);
+}
+.button.primary:hover:not(:disabled) { background: linear-gradient(145deg, #f4fff6, #b8f3cc 45%, #75ca98); }
+.button:active:not(:disabled), .choice-card:active, .option-button:active, .symptom-card:active,
+.category-tabs button:active, .history-filters button:active, .result-tools button:active,
+.review-line button:active, .history-record:active, .history-delete:active {
+  transform: translateY(1px) scale(.987);
+  filter: brightness(.96);
+  box-shadow: inset 0 3px 8px rgba(0, 22, 10, .3), inset 0 -1px 0 rgba(255, 255, 255, .16);
+}
+
+.choice-card.selected, .option-button.selected, .symptom-card.selected,
+.category-tabs button.selected, .history-filters button.selected {
+  border-color: rgba(181, 255, 208, .85);
+  background: linear-gradient(135deg, rgba(205, 255, 220, .3), rgba(104, 211, 145, .17));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .54), 0 9px 20px rgba(67, 205, 121, .2);
+}
+.symptom-card.red-flag.selected, .danger-option.selected {
+  border-color: rgba(255, 188, 181, .88);
+  background: linear-gradient(135deg, rgba(255, 214, 207, .24), rgba(231, 104, 96, .14));
+}
+.symptom-check { border-color: rgba(229, 255, 237, .4); background: rgba(5, 25, 13, .14); box-shadow: inset 0 1px 2px rgba(0, 12, 5, .25), 0 1px 0 rgba(255, 255, 255, .14); }
+.selected .symptom-check { box-shadow: inset 0 1px 1px rgba(255, 255, 255, .58), 0 3px 7px rgba(31, 162, 88, .25); }
+.search-field:focus-within { border-color: rgba(185, 255, 211, .86); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .38), 0 0 0 4px rgba(133, 233, 170, .14), 0 14px 25px rgba(0, 15, 7, .25); }
+
+.safety-check { background: linear-gradient(135deg, rgba(255, 205, 197, .16), rgba(255, 255, 255, .045)); border-color: rgba(249, 164, 155, .47); }
+.outcome-card::after { background: linear-gradient(115deg, rgba(255, 255, 255, .22), transparent 32%, rgba(255, 255, 255, .03) 70%); }
+.progress-marker { border-color: var(--glass-stroke); background: linear-gradient(140deg, var(--glass-fill-strong), var(--glass-fill)); box-shadow: inset 0 1px 0 var(--glass-specular), 0 5px 13px rgba(0, 14, 7, .23); }
+.progress li.done .progress-marker { background: linear-gradient(145deg, #e8fff0, #97e8b7); }
+
+@media (max-width: 740px) {
+  .choice-card:hover, .option-button:hover, .symptom-card:hover, .button:hover:not(:disabled) { transform: translateY(-1px); }
+  .app-header { -webkit-backdrop-filter: blur(20px) saturate(145%); backdrop-filter: blur(20px) saturate(145%); }
+}
