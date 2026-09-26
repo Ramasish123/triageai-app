@@ -298,6 +298,20 @@ function HomePage({ copy, onStartAssessment, onNavigate }) {
       <article><span className="principle-icon plum"><LockKeyhole size={22} /></span><h2>{copy.private}</h2><p>{copy.privateText}</p></article>
     </section>
 
+    <section className="challenge-fit page-width" aria-labelledby="challenge-fit-title">
+      <div className="challenge-intro">
+        <span className="eyebrow">{copy.impactEyebrow}</span>
+        <h2 id="challenge-fit-title">{copy.impactTitle}</h2>
+        <p>{copy.impactLead}</p>
+      </div>
+      <div className="challenge-grid">
+        <article><span className="challenge-icon access"><ClipboardCheck size={23} /></span><h3>{copy.impactAccessTitle}</h3><p>{copy.impactAccessText}</p></article>
+        <article><span className="challenge-icon safety"><ShieldCheck size={23} /></span><h3>{copy.impactSafetyTitle}</h3><p>{copy.impactSafetyText}</p></article>
+        <article><span className="challenge-icon continuity"><TimerReset size={23} /></span><h3>{copy.impactContinuityTitle}</h3><p>{copy.impactContinuityText}</p></article>
+      </div>
+      <p className="challenge-note"><Info size={17} aria-hidden="true" />{copy.impactNote}</p>
+    </section>
+
     <section className="how-it-works page-width" id="how-it-works">
       <div className="how-intro"><span className="eyebrow">{copy.howItWorks}</span><h2>{copy.howTitle}</h2><p>{copy.howText}</p></div>
       <ol>
